@@ -22,7 +22,7 @@ export default function HomeScreen({ navigation }) {
       <View>
         <Image
           resizeMode="contain"
-          style={styles.image}
+          style={styles.image} 
           source={require("./../assets/images/Garbage.png")}
         />
       </View>
