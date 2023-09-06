@@ -22,7 +22,19 @@ export default function PaymentScreen() {
           </Pressable>
         </View>
         <View style={styles.line}></View>
-
+      </View>
+      <View style={styles.coupon}>
+        <Text style={styles.pm}>Payment Methods</Text>
+        <View style={styles.cardinfo}>
+          <Image
+            source={require("/Users/HP/Desktop/NSS/project/WasteRide2/assets/images/visa.png")}
+          />
+          <View>
+            <Text>*******44444</Text>
+            <Text>Expires 04/23</Text>
+          </View>
+        </View>
+        <View style={styles.line}></View>
       </View>
     </View>
   );
@@ -48,7 +60,7 @@ const styles = StyleSheet.create({
   },
   inputbtn: {
     flexDirection: "row",
-    gap:10
+    gap: 10,
   },
   input: {
     width: "60%",
@@ -63,19 +75,37 @@ const styles = StyleSheet.create({
     width: "37%",
     height: "75%",
     backgroundColor: "black",
-    borderRadius:5,
+    borderRadius: 5,
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
   },
-  apply:{
-    color: "white"
+  apply: {
+    color: "white",
   },
- 
+
   line: {
     height: 1,
     width: "100%",
-    backgroundColor: "ash",
+    backgroundColor: "black",
+  },
+  pm: {
+    fontSize: 15,
+    lineHeight: 40,
+    fontWeight: "400",
+    paddingBottom: 20,
+  },
+  image: {
+    height: 281,
+    width: 292,
+    marginTop: 20,
+    marginLeft: 25,
+  },
+  cardinfo: {
+    flexDirection: "row",
+    gap: 10,
+    paddingBottom: 25,
+
   },
 });
