@@ -20,7 +20,7 @@ const Stack = createStackNavigator();
         <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="Otp" component={OtpScreen} />
+        <Stack.Screen name="OtpScreen" component={OtpScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} />
         <Stack.Screen name="Password" component={PasswordScreen} />
         <Stack.Screen name="Trial" component={TrialScreen} />

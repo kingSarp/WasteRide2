@@ -26,9 +26,7 @@ export default function PaymentScreen() {
       <View style={styles.coupon}>
         <Text style={styles.pm}>Payment Methods</Text>
         <View style={styles.cardinfo}>
-          <Image
-            source={require("/Users/HP/Desktop/NSS/project/WasteRide2/assets/images/visa.png")}
-          />
+          <Image source={require("../../assets/images/visa.png")} />
           <View>
             <Text>*******44444</Text>
             <Text>Expires 04/23</Text>
@@ -106,6 +104,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 10,
     paddingBottom: 25,
-
   },
 });
