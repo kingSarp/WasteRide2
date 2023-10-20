@@ -1,28 +1,18 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  TextInput,
-  Button,
-  
-} from "react-native";
+import { View, Text, Image, TextInput, Alert, Button, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
-
 import { Colors } from "react-native/Libraries/NewAppScreen";
-import { OtpInput } from "react-native-otp-entry";
-
-import {
-  getAuth,
-  PhoneAuthProvider,
-  signInWithCredential,
-} from "firebase/auth";
+import { getAuth , PhoneAuthProvider, signInWithCredential } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import { initializeAuth, getReactNativePersistence } from "firebase/auth";
 import { firebaseConfig } from "../firebase";
 
 const app = initializeApp(firebaseConfig);
+// const auth = initializeAuth(app, {
+//   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+// });
+
 const auth = getAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
 });
@@ -47,7 +37,7 @@ export default function OtpScreen({ navigation, route }) {
       await signInWithCredential(auth, credential);
       setInfo("Success: Phone authentication successful");
 
-      navigation.navigate("Details");
+      navigation.navigate("Register");
     } catch (error) {
       console.log("Error while sending verification code:", error.message);
       // setInfo(`Error: ${error.message}`);
@@ -63,7 +53,7 @@ export default function OtpScreen({ navigation, route }) {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.message}>
         Enter the 5-digit code that has been sent to {info}
       </Text>
@@ -90,7 +80,7 @@ export default function OtpScreen({ navigation, route }) {
         />
               <Text style={styles.info}>{info}</Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({

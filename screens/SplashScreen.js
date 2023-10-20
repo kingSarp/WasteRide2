@@ -18,7 +18,7 @@ export default function SplashScreen({ navigation }) {
       />
       <Pressable
         style={styles.button1}
-        onPress={() => navigation.navigate("SignUp")}
+        onPress={() => navigation.navigate("SignIn")}
       >
         <Text > Get Started</Text>
       </Pressable>

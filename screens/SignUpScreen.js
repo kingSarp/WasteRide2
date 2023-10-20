@@ -1,14 +1,8 @@
-import {
-  View,
-  Text,
-  Pressable,
-  TextInput,
-  StyleSheet,
-  Button,
-} from "react-native";
+import { View, Text, Pressable, TextInput, StyleSheet } from "react-native";
 import React, { useState, useRef } from "react";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { Ionicons } from "@expo/vector-icons";
+import { Button } from "@rneui/themed";
 
 import {
   FirebaseRecaptchaVerifierModal,
@@ -20,18 +14,16 @@ import {
   PhoneAuthProvider,
   signInWithCredential,
 } from "firebase/auth";
-import { initializeApp } from "firebase/app";
+import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import { initializeAuth, getReactNativePersistence } from "firebase/auth";
 
-import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
+import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase";
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// initializeAuth(app, {
-//   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
-// });
+const auth = getAuth(app, {
+  persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+});
 
 export default function SignUpScreen({ navigation }) {
   const recaptchaVerifier = useRef(null);
@@ -75,7 +67,7 @@ export default function SignUpScreen({ navigation }) {
         // value={number}
         onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
       />
-     
+
       <Button
         onPress={handleSendVerificationCode}
         title="Send Code"
