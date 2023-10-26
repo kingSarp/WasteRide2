@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, ActivityIndicator } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { UserLocationContext } from "../../Context/UserLocationContext";
 import { useUser } from "../../Context/userContext";
@@ -12,7 +12,7 @@ export default function GoogleMapView() {
   const [pickupLocation, setPickupLocation] = useState(null);
 
   const { location } = useContext(UserLocationContext);
-  const { user , setUser } = useUser();
+  const { user, setUser } = useUser();
 
   useEffect(() => {
     if (location) {
@@ -24,23 +24,18 @@ export default function GoogleMapView() {
         longitudeDelta: 0.0421,
       });
 
-     // Set pickup location using template string
-     const newPickupLocation = `Latitude: ${location.coords.latitude}, Longitude: ${location.coords.longitude}`;
-     setPickupLocation(newPickupLocation);
-  
-      // Set the user data here
-      console.log("User data:", user); // Log the user data
-      setUser(user);
+      // Set pickup location using template string
+      const newPickupLocation = `Latitude: ${location.coords.latitude}, Longitude: ${location.coords.longitude}`;
+      setPickupLocation(newPickupLocation);
 
-   // Debug logs
-   console.log("Location available:", location);
-   console.log("Pickup Location:", pickupLocation);
+      // Debug logs
+      console.log("Location available:", location);
     } else {
-    console.log("Location is missing.");
-  }
-  }, [location, user]);
+      console.log("Location is missing.");
+    }
+  }, [location]);
 
-  const requestPickup = async (user, pickupLocation) => {
+  const requestPickup = async () => {
     if (!user || !pickupLocation) {
       console.log("User or Pickup Location is missing.");
       return;
@@ -54,11 +49,17 @@ export default function GoogleMapView() {
         pickupLocation: pickupLocation,
         status: "pending",
       });
+      console.log("Pickup request successfully sent.");
     } catch (error) {
       console.error("Error requesting pickup:", error);
       // Handle the error, e.g., display an error message to the user.
     }
   };
+
+  if (!user) {
+    return <ActivityIndicator size="large" />;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.mapContainer}>
