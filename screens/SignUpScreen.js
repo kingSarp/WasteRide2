@@ -1,23 +1,15 @@
-import { View, Text, Pressable, TextInput, StyleSheet } from "react-native";
 import React, { useState, useRef } from "react";
-import { Colors } from "react-native/Libraries/NewAppScreen";
+import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Button } from "@rneui/themed";
-
 import {
   FirebaseRecaptchaVerifierModal,
   FirebaseRecaptchaBanner,
 } from "expo-firebase-recaptcha";
-
-import {
-  getAuth,
-  PhoneAuthProvider,
-  signInWithCredential,
-} from "firebase/auth";
+import { getAuth, PhoneAuthProvider } from "firebase/auth";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
-import { initializeAuth, getReactNativePersistence } from "firebase/auth";
-
 import { initializeApp } from "firebase/app";
+import { getReactNativePersistence } from "firebase/auth";
 import { firebaseConfig } from "../firebase";
 
 const app = initializeApp(firebaseConfig);
@@ -33,7 +25,6 @@ export default function SignUpScreen({ navigation }) {
   const handleSendVerificationCode = async () => {
     try {
       console.log("Starting to send verification code...");
-
       const phoneProvider = new PhoneAuthProvider(auth);
       const verificationId = await phoneProvider.verifyPhoneNumber(
         phoneNumber,
@@ -46,11 +37,9 @@ export default function SignUpScreen({ navigation }) {
       navigation.navigate("OtpScreen", { verificationId });
     } catch (error) {
       console.log("Error while sending verification code:", error.message);
-
       setInfo(`Error: ${error.message}`);
     }
   };
-  console.log("Rendering SignUpScreen...");
 
   return (
     <View style={styles.container}>
@@ -64,81 +53,56 @@ export default function SignUpScreen({ navigation }) {
         keyboardType="phone-pad"
         textContentType="telephoneNumber"
         autoFocus
-        // value={number}
+        value={phoneNumber}
         onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
       />
 
       <Button
         onPress={handleSendVerificationCode}
-        title="Send Code"
+        title="Next"
         disabled={!phoneNumber}
+        color="#66d237"
       />
-      <View style={styles.Or}>
-        <View style={styles.dash}></View>
+      <View style={styles.orContainer}>
+        <View style={styles.dash} />
         <Text>Or</Text>
-        <View style={styles.dash}></View>
+        <View style={styles.dash} />
       </View>
-      <View style={styles.button2}>
-        <Ionicons
-          name="logo-google"
-          size={24}
-          color="black"
-          style={{ marginRight: 10 }}
-        />
-        <Text style={{ color: Colors.ash }}> Sign up with Google</Text>
-      </View>
+
+      <Pressable
+        style={({ pressed }) => [
+          styles.googleButton,
+          { backgroundColor: pressed ? "#e3e3e3" : "white" },
+        ]}
+        onPress={() => {
+          // Handle Google sign-in here
+        }}
+      >
+        <View style={styles.iconContainer}>
+          <Ionicons name="logo-google" size={24} color="black" />
+        </View>
+        <Text style={styles.buttonText}>Sign in with Google</Text>
+      </Pressable>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-
     justifyContent: "center",
-
-    // alignItems: "center",
   },
-
-  button: {
-    backgroundColor: Colors.primary,
+  input: {
+    // margin: ,
+    // marginTop:30,
     padding: 10,
-    margin: 30,
-    borderRadius: 10,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    marginBottom: 20,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 5,
   },
-  button1: {
-    backgroundColor: "#66d237",
-    padding: 10,
-    margin: 30,
-    borderRadius: 10,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  button2: {
-    backgroundColor: "white",
-    padding: 10,
-    margin: 30,
-    borderRadius: 10,
-    overflow: "hidden",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 10,
-  },
-  dash: {
-    height: 3,
-    width: 110,
-    backgroundColor: "black",
-  },
-  Or: {
-    // padding: 10,
+  orContainer: {
     margin: 30,
     borderRadius: 50,
     display: "flex",
@@ -146,12 +110,23 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  input: {
-    margin: 30,
+  dash: {
+    height: 3,
+    width: 115,
+    backgroundColor: "black",
+  },
+  googleButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
     padding: 10,
-    marginBottom: 10,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 8,
+  },
+  iconContainer: {
+    marginRight: 10,
+  },
+  buttonText: {
+    color: "black",
   },
 });

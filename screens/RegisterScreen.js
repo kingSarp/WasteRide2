@@ -1,15 +1,9 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  TextInput,
-  Button,
-} from "react-native";
+import { View, Text, StyleSheet, TextInput, Button, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-
+import { collection, addDoc } from "firebase/firestore";
+import { firestore } from "../firebase";
 
 export default function RegisterScreen({ navigation }) {
   const [fullname, setFullname] = useState("");
@@ -20,30 +14,31 @@ export default function RegisterScreen({ navigation }) {
   const createAccount = async () => {
     try {
       if (password !== confirmPassword) {
-        Alert.alert("password not matching");
-        // Passwords do not match, show an error or alert the user.
+        Alert.alert("Passwords do not match");
         return;
       }
+
+      const auth = getAuth();
+
       if (password && email) {
         createUserWithEmailAndPassword(auth, email, password)
           .then((userCredentials) => {
             const user = userCredentials.user;
-            console.log("successfully created", user.email);
+            console.log("Successfully created user with email:", user.email);
           })
           .catch((error) => {
-            if (error.code === "auth/email-used-already") {
-              Alert.alert("existing email");
+            if (error.code === "auth/email-already-in-use") {
+              Alert.alert("Email already in use");
+            } else if (error.code === "auth/invalid-email") {
+              Alert.alert("Invalid email");
+            } else {
+              console.error("Error creating account:", error.message);
             }
-            if (error.code === "auth/invalid-email") {
-              Alert.alert("invalid email");
-            }
-            console.error("error creating account  ", error.message);
           });
       } else {
-        Alert.alert("missing data");
+        Alert.alert("Missing data");
       }
 
-      const auth = getAuth(); // Get the Firebase auth instance
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -53,6 +48,13 @@ export default function RegisterScreen({ navigation }) {
       // User registration was successful
       console.log("User registered:", userCredential.user);
       // You can navigate to a success screen or perform any other actions here.
+
+      // Add user information to Firestore
+      await addDoc(collection(firestore, "User Information"), {
+        email: email,
+        fullname: fullname,
+        password: password,
+      });
     } catch (error) {
       console.error("Error creating account:", error);
       // Handle the error, e.g., display an error message to the user.
@@ -82,9 +84,9 @@ export default function RegisterScreen({ navigation }) {
         />
       </View>
       <View>
-        <Text style={styles.label}>Password </Text>
+        <Text style={styles.label}>Password</Text>
         <TextInput
-          placeholder="password"
+          placeholder="Password"
           secureTextEntry
           value={password}
           onChangeText={setPassword}
@@ -94,7 +96,7 @@ export default function RegisterScreen({ navigation }) {
       <View>
         <Text style={styles.label}>Confirm Password</Text>
         <TextInput
-          placeholder="Confirm password"
+          placeholder="Confirm Password"
           secureTextEntry
           value={confirmPassword}
           onChangeText={setConfirmPassword}
@@ -114,21 +116,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-
     justifyContent: "center",
-
-    // alignItems: "center",
   },
   input: {
     width: "100%",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 10,
-
     padding: 10,
     marginBottom: 20,
   },
-
   button1: {
     backgroundColor: "#66d237",
     borderRadius: 10,

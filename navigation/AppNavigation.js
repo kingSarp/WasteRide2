@@ -9,6 +9,7 @@ import OtpScreen from "../screens/OtpScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import PasswordScreen from "../screens/PasswordScreen";
 import TrialScreen from "../screens/TrialScreen";
+import PickupSchedulingScreen from "../screens/PickupSchedulingScreen";
 // import HomeScreen from '../screens/HomeScreen';
 // import MapScreen from '../screens/MapScreen';
 
@@ -27,6 +28,9 @@ export default function AppNavigation() {
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="Password" component={PasswordScreen} />
       <Stack.Screen name="Trial" component={TrialScreen} />
+      <Stack.Screen name="Scheduling" component={PickupSchedulingScreen} />
+
+
       {/* <Stack.Screen name="Map" component={MapScreen} /> */}
     </Stack.Navigator>
   );
