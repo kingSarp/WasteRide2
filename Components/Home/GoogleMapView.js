@@ -70,14 +70,16 @@ export default function GoogleMapView({ navigation }) {
         pickupLocation: pickupLocation,
         status: "pending",
       });
+      console.log("Pickup request successfully sent.");
     } catch (error) {
       console.error("Error requesting pickup:", error);
       // Handle the error, e.g., display an error message to the user.
     }
   };
-  // if (!user) {
-  //   return <ActivityIndicator size="large" />;
-  // }
+
+  if (!user) {
+    return <ActivityIndicator size="large" />;
+  }
 
   return (
     <View style={styles.container}>
