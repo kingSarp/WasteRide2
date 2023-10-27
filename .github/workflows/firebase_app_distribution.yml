@@ -28,4 +28,5 @@ jobs:
 
     - name: Distribute App to Firebase
       run: |
-        firebase appdistribution:distribute application-85f85d23-ff59-4c8f-9078-3aefb749c325.aab --app com.salamitech.WasteRide2 --debug
+      run: firebase appdistribution:distribute application-85f85d23-ff59-4c8f-9078-3aefb749c325.aab --app com.salamitech.WasteRide2 --debug
+
