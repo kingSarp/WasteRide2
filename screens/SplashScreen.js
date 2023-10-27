@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Image, Text, StyleSheet, Button, Pressable } from "react-native";
+import { View, Image, Text, StyleSheet, Button, Pressable,   } from "react-native";
 
 export default function SplashScreen({ navigation }) {
 //   useEffect(() => {
