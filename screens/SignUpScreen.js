@@ -11,11 +11,12 @@ import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import { initializeApp } from "firebase/app";
 import { getReactNativePersistence } from "firebase/auth";
 import { firebaseConfig } from "../firebase";
+import { auth } from "../firebase";
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app, {
-  persistence: getReactNativePersistence(ReactNativeAsyncStorage),
-});
+// const app = initializeApp(firebaseConfig);
+// const auth = getAuth(app, {
+//   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+// });
 
 export default function SignUpScreen({ navigation }) {
   const recaptchaVerifier = useRef(null);

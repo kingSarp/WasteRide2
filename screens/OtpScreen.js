@@ -5,17 +5,16 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 import { getAuth , PhoneAuthProvider, signInWithCredential } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
-import { initializeAuth, getReactNativePersistence } from "firebase/auth";
+import { getReactNativePersistence } from "firebase/auth";
 import { firebaseConfig } from "../firebase";
+import { auth } from '../firebase';
 
-const app = initializeApp(firebaseConfig);
-// const auth = initializeAuth(app, {
-//   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+
+// const app = initializeApp(firebaseConfig);
+
+// const auth = getAuth(app, {
+//   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
 // });
-
-const auth = getAuth(app, {
-  persistence: getReactNativePersistence(ReactNativeAsyncStorage),
-});
 
 export default function OtpScreen({ navigation, route }) {
   const { verificationId } = route.params;
