@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
 import { firestore } from "../firebase";
+import { auth } from "../firebase";
 
 export default function RegisterScreen({ navigation }) {
   const [fullname, setFullname] = useState("");

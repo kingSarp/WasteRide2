@@ -1,21 +1,9 @@
-import { View, Text, Image, TextInput, Alert, Button, StyleSheet } from "react-native";
+import { View, Text, TextInput, Alert, Button, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
 import { Colors } from "react-native/Libraries/NewAppScreen";
-import { getAuth , PhoneAuthProvider, signInWithCredential } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
-import { initializeAuth, getReactNativePersistence } from "firebase/auth";
-import { firebaseConfig } from "../firebase";
-
-const app = initializeApp(firebaseConfig);
-// const auth = initializeAuth(app, {
-//   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
-// });
-
-const auth = getAuth(app, {
-  persistence: getReactNativePersistence(ReactNativeAsyncStorage),
-});
+import { PhoneAuthProvider, signInWithCredential } from "firebase/auth";
+import { auth } from '../firebase';
 
 export default function OtpScreen({ navigation, route }) {
   const { verificationId } = route.params;
@@ -40,11 +28,8 @@ export default function OtpScreen({ navigation, route }) {
       navigation.navigate("Register");
     } catch (error) {
       console.log("Error while sending verification code:", error.message);
-      // setInfo(`Error: ${error.message}`);
       if (error.code === "auth/invalid-verification-code") {
-        // Handle incorrect or expired code
         setInfo("Invalid or expired verification code. Please try again.");
-        // You can also provide the user with an option to request a new code here.
       } else {
         console.error("Error while failed verification code:", error);
         setInfo(`Error: ${error.message}`);
@@ -79,26 +64,25 @@ export default function OtpScreen({ navigation, route }) {
           title="verify code"
           disabled={!verificationCode}
         />
-              <Text style={styles.info}>{info}</Text>
+        <Text style={styles.info}>{info}</Text>
       </View>
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    // padding: 15,
-    // justifyContent: "center",
-    // alignItems: "center",
     flex: 1,
     padding: 20,
     justifyContent: "center",
+    backgroundColor: '#F7F7F7'
   },
   message: {
+    fontSize: 18,
     marginBottom: 30,
     textAlign: "center",
+    color: '#333'
   },
-
   resendContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -109,38 +93,55 @@ const styles = StyleSheet.create({
     marginTop: "20%",
   },
   resendText: {
-    color: "#66d237" 
+    color: "#66d237",
+    marginLeft: 5,
+    textDecorationLine: 'underline'
   },
-
   button: {
     backgroundColor: "#66d237",
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 105,
-    // width:"50%"
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 5
   },
   buttonText: {
     color: Colors.white,
   },
-
   otpcontainer: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     paddingVertical: 20,
-    // padding: 20
   },
   inputsContainer: {
     marginBottom: 100,
   },
   input: {
-  
     width: "100%",
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#E0E0E0",
     borderRadius: 10,
-    padding: 10,
+    padding: 15,
     marginBottom: 20,
+    backgroundColor: '#FFF',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 5
+  },
+  info: {
+    marginTop: 10,
+    color: '#555',
+    textAlign: 'center'
   }
 });

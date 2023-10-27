@@ -11,22 +11,15 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import {
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-import { getReactNativePersistence } from "firebase/auth";
-import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
-import { firebaseConfig } from "../firebase";
 import { useUser } from "../Context/userContext";
+import { auth } from "../firebase";
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app, {
-  persistence: getReactNativePersistence(ReactNativeAsyncStorage),
-});
+
 
 export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState("");

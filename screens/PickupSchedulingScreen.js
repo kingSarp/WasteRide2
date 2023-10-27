@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  StyleSheet
+} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-
-
-
 export default function PickupSchedulingScreen({ navigation }) {
-
   const [scheduledPickups, setScheduledPickups] = useState([]);
   const [isDatePickerVisible, setDatePickerVisible] = useState(false);
   const [isTimePickerVisible, setTimePickerVisible] = useState(false);
@@ -45,10 +48,10 @@ export default function PickupSchedulingScreen({ navigation }) {
       const newPickup = {
         date: pickupDate,
         time: pickupTime,
-        location: pickupLocation,
+        location: pickupLocation
       };
 
-      setScheduledPickups((prevPickups) => [...prevPickups, newPickup]);
+      setScheduledPickups(prevPickups => [...prevPickups, newPickup]);
       setPickupDate("");
       setPickupTime("");
       setPickupLocation("");
@@ -60,23 +63,32 @@ export default function PickupSchedulingScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Schedule Pickup</Text>
+
       <TextInput
         style={styles.input}
         placeholder="Location"
         value={pickupLocation}
         onChangeText={setPickupLocation}
       />
+
       <View style={styles.dateTimeContainer}>
-        <Button title="Select Date" onPress={showDatePicker} />
+        <TouchableOpacity style={styles.button} onPress={showDatePicker}>
+          <Text style={styles.buttonText}>Select Date</Text>
+        </TouchableOpacity>
         <Text style={styles.dateTimeText}>{pickupDate}</Text>
+
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
           mode="date"
           onConfirm={handleDateConfirm}
           onCancel={hideDatePicker}
         />
-        <Button title="Select Time" onPress={showTimePicker} />
+
+        <TouchableOpacity style={styles.button} onPress={showTimePicker}>
+          <Text style={styles.buttonText}>Select Time</Text>
+        </TouchableOpacity>
         <Text style={styles.dateTimeText}>{pickupTime}</Text>
+
         <DateTimePickerModal
           isVisible={isTimePickerVisible}
           mode="time"
@@ -84,8 +96,13 @@ export default function PickupSchedulingScreen({ navigation }) {
           onCancel={hideTimePicker}
         />
       </View>
-      <Button title="Schedule Pickup" onPress={schedulePickup} />
+
+      <TouchableOpacity style={styles.primaryButton} onPress={schedulePickup}>
+        <Text style={styles.primaryButtonText}>Schedule Pickup</Text>
+      </TouchableOpacity>
+
       <Text style={styles.title}>Scheduled Pickups</Text>
+
       <FlatList
         data={scheduledPickups}
         keyExtractor={(item, index) => index.toString()}
@@ -105,33 +122,80 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: '#F7F7F7'
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 20,
+    color: '#333'
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
+    borderColor: "#E0E0E0",
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 20,
+    backgroundColor: '#FFF',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 5
   },
   dateTimeContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 10,
+    marginBottom: 20
   },
   dateTimeText: {
     fontSize: 16,
+    color: '#555',
+    marginBottom: 10
+  },
+  button: {
+    backgroundColor: '#FFF',
+    padding: 10,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    marginBottom: 10
+  },
+  buttonText: {
+    color: '#333'
+  },
+  primaryButton: {
+    backgroundColor: '#66d237',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginBottom: 20
+  },
+  primaryButtonText: {
+    color: '#FFF',
+    fontWeight: 'bold'
   },
   scheduledPickup: {
-    marginBottom: 10,
+    marginBottom: 20,
     borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    borderRadius: 5,
-  },
+    borderColor: "#E0E0E0",
+    padding: 15,
+    borderRadius: 10,
+    backgroundColor: '#FFF',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 5
+  }
 });
