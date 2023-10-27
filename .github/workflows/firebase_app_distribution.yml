@@ -1,0 +1,31 @@
+name: Firebase App Distribution
+
+on:
+  push:
+    branches:
+      - main  # or the name of your default branch
+
+jobs:
+  distribute:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install Firebase CLI
+      run: npm install -g firebase-tools
+
+    - name: Authenticate with Firebase using Service Account
+      run: firebase login:ci --token "$FIREBASE_SERVICE_ACCOUNT"
+      env:
+        FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+
+    - name: Distribute App to Firebase
+      run: |
+        firebase appdistribution:distribute application-85f85d23-ff59-4c8f-9078-3aefb749c325.aab --app com.salamitech.WasteRide2 --debug

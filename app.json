@@ -22,8 +22,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff",
         "package": "com.sarpong.wasteRide",
-        "googleMapsApiKey":"AIzaSyDL_hAQJdEdP1WmJirJssWtR2NkDiU3FAs"
-      }
+        "googleMapsApiKey": "AIzaSyDL_hAQJdEdP1WmJirJssWtR2NkDiU3FAs"
+      },
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE"
+      ],
+      "package": "com.salamitech.WasteRide2"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -36,8 +42,11 @@
           "locationAlwaysAndWhenInUsePermission": "Allow $(WasteRide2) to use your location."
         }
       ]
-    ]
-
-
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "37c0b55e-21b4-4b4a-9b53-9c5c0a2ef8a7"
+      }
+    }
   }
 }
