@@ -8,7 +8,7 @@ export default function MapScreen({ navigation }) {
   return (
     <View style={styles.container}>
       
-        <GoogleMapView/>
+        <GoogleMapView navigation={navigation}/>
      
     </View>
   );

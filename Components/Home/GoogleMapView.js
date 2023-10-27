@@ -89,6 +89,8 @@ export default function GoogleMapView({ navigation }) {
           provider={PROVIDER_GOOGLE}
           showsUserLocation={true}
           region={mapRegion}
+          apiKey="AIzaSyDL_hAQJdEdP1WmJirJssWtR2NkDiU3FAs" // Add your API key here
+
         />
       </View>
       <View style={styles.buttonContainer}>
@@ -112,7 +114,7 @@ export default function GoogleMapView({ navigation }) {
           </View>
         </View>
         <View style={styles.rideDetails}>
-          <Button title="Scheduled" color="#8DD4A9"  />
+          <Button title="Scheduled" color="#8DD4A9"  onPress={() => navigation.navigate("Scheduling")}  />
           <Button title="Ride Options" color="#8DD4A9" />
         </View>
         {/* <Text style={styles.label}>Pickup Location (Current Location):</Text> */}

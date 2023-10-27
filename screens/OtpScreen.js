@@ -67,8 +67,9 @@ export default function OtpScreen({ navigation, route }) {
         />
       </View>
       <View style={styles.resendContainer}>
+        <Text> Haven’t gotten the code yet?</Text>
         <Text style={styles.resendText}>
-          Haven’t gotten the code yet? Resend Code
+          Resend Code
         </Text>
       </View>
       <View style={styles.nextContainer}>
@@ -85,10 +86,13 @@ export default function OtpScreen({ navigation, route }) {
 }
 const styles = StyleSheet.create({
   container: {
+    // flex: 1,
+    // padding: 15,
+    // justifyContent: "center",
+    // alignItems: "center",
     flex: 1,
-    padding: 15,
+    padding: 20,
     justifyContent: "center",
-    alignItems: "center",
   },
   message: {
     marginBottom: 30,
@@ -96,13 +100,16 @@ const styles = StyleSheet.create({
   },
 
   resendContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 45,
   },
   nextContainer: {
     marginTop: "20%",
   },
   resendText: {
-    color: Colors.dark,
+    color: "#66d237" 
   },
 
   button: {
@@ -128,11 +135,12 @@ const styles = StyleSheet.create({
     marginBottom: 100,
   },
   input: {
-    margin: 30,
-    padding: 10,
-    marginBottom: 10,
-    borderColor: "#ccc",
+  
+    width: "100%",
     borderWidth: 1,
-    borderRadius: 5,
+    borderColor: "#ccc",
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 20,
   }
 });
