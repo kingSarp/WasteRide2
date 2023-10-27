@@ -6,6 +6,9 @@ import {
   Button,
   ActivityIndicator,
   Image,
+  Modal,
+  Pressable,
+  Alert
 } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
@@ -18,13 +21,13 @@ import { firestore } from "../../firebase";
 export default function GoogleMapView({ navigation }) {
   const [mapRegion, setMapRegion] = useState(null);
   const [pickupLocation, setPickupLocation] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const { location } = useContext(UserLocationContext);
   const { user, setUser } = useUser();
 
   useEffect(() => {
     if (location) {
-      // Set map region if location is available
       setMapRegion({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
@@ -32,15 +35,12 @@ export default function GoogleMapView({ navigation }) {
         longitudeDelta: 0.0421,
       });
 
-      // Set pickup location using template string
       const newPickupLocation = `Latitude: ${location.coords.latitude}, Longitude: ${location.coords.longitude}`;
       setPickupLocation(newPickupLocation);
 
-      // Set the user data here
-      console.log("User data:", user); // Log the user data
+      console.log("User data:", user);
       setUser(user);
 
-      // Debug logs
       console.log("Location available:", location);
       console.log("Pickup Location:", pickupLocation);
     } else {
@@ -51,6 +51,7 @@ export default function GoogleMapView({ navigation }) {
   const scheduled = () => {
     navigation.navigate("Scheduling");
   };
+
   const requestPickup = async () => {
     if (!user || !pickupLocation) {
       console.log("User or Pickup Location is missing.");
@@ -63,7 +64,7 @@ export default function GoogleMapView({ navigation }) {
       "and pickup location:",
       pickupLocation
     );
-    // Add user information to Firestore
+
     try {
       await addDoc(collection(firestore, "pickupRequests"), {
         userId: user.uid,
@@ -71,9 +72,9 @@ export default function GoogleMapView({ navigation }) {
         status: "pending",
       });
       console.log("Pickup request successfully sent.");
+      setModalVisible(true);
     } catch (error) {
       console.error("Error requesting pickup:", error);
-      // Handle the error, e.g., display an error message to the user.
     }
   };
 
@@ -83,14 +84,34 @@ export default function GoogleMapView({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Request successfully Booked!</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.textStyle}>Close</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
       <View style={styles.mapContainer}>
         <MapView
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           showsUserLocation={true}
           region={mapRegion}
-          apiKey="AIzaSyDL_hAQJdEdP1WmJirJssWtR2NkDiU3FAs" // Add your API key here
-
+          apiKey="AIzaSyDL_hAQJdEdP1WmJirJssWtR2NkDiU3FAs"
         />
       </View>
       <View style={styles.buttonContainer}>
@@ -114,18 +135,14 @@ export default function GoogleMapView({ navigation }) {
           </View>
         </View>
         <View style={styles.rideDetails}>
-          <Button title="Scheduled" color="#8DD4A9"  onPress={() => navigation.navigate("Scheduling")}  />
+          <Button title="Scheduled" color="#8DD4A9" onPress={scheduled} />
           <Button title="Ride Options" color="#8DD4A9" />
         </View>
-        {/* <Text style={styles.label}>Pickup Location (Current Location):</Text> */}
         <Button
           color="#66d237"
           title="Request Pickup"
           onPress={requestPickup}
         />
-        {/* <Text style={styles.pickupLocationText}>
-          {pickupLocation || "Waiting for location data..."}
-        </Text> */}
       </View>
     </View>
   );
@@ -134,9 +151,10 @@ export default function GoogleMapView({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#F7F7F7'
   },
   mapContainer: {
-    flex: 7,
+    flex: 6,
   },
   map: {
     flex: 1,
@@ -144,34 +162,85 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 3,
     padding: 16,
+    backgroundColor: '#FFF',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: -2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
   },
   label: {
-    fontSize: 16,
-  },
-  pickupLocationText: {
-    marginTop: 5,
-    fontSize: 14,
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333'
   },
   CarContainer: {
     flexDirection: "row",
-    justifyContent: "center",
-    alignContent: "space-around",
-    marginTop: 3
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 5
   },
   mini: {
-    // alignContent:"center",
     alignItems: "center",
-    // marginRight:30
+    flex: 1,
+    padding: 10
   },
   large: {
-    alignContent: "center",
     alignItems: "center",
-    marginRight: 75,
+    flex: 1,
+    padding: 10
   },
   rideDetails: {
     flexDirection: "row",
-    // alignContent: "space-between",
-    justifyContent: "space-around",
-    marginTop:3
+    justifyContent: "space-between",
+    marginTop: 5,
+    marginBottom: 10
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: 'rgba(0,0,0,0.5)'
+  },
+  modalView: {
+    width: '80%',
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    width: '100%',
+    marginTop: 10
+  },
+  buttonClose: {
+    backgroundColor: "#66d237",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 15,
+    textAlign: "center",
+    color: '#333'
   },
 });

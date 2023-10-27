@@ -5,6 +5,8 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import MapScreen from "./DrawerNavigationScreens/MapScreen";
 import ProfileScreen from "./DrawerNavigationScreens/ProfileScreen";
 import PaymentScreen from "./DrawerNavigationScreens/PaymentScreen";
+import OrdersScreen from "./DrawerNavigationScreens/OrdersScreen";
+import AboutScreen from "./DrawerNavigationScreens/AboutScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -37,6 +39,8 @@ export default function TrialScreen() {
         options={{ headerTitle: "" }}
       />
       <Drawer.Screen name="Payment" component={PaymentScreen} />
+      <Drawer.Screen name="Requested Trips" component={OrdersScreen}/>
+      <Drawer.Screen name="About" component={AboutScreen}/>
     </Drawer.Navigator>
   );
 }
