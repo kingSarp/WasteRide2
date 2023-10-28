@@ -7,7 +7,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash1.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -20,9 +20,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff",
-        "package": "com.sarpong.wasteRide",
-        "googleMapsApiKey": "AIzaSyDL_hAQJdEdP1WmJirJssWtR2NkDiU3FAs"
+        "backgroundColor": "#ffffff"
       },
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
@@ -46,7 +44,8 @@
     "extra": {
       "eas": {
         "projectId": "37c0b55e-21b4-4b4a-9b53-9c5c0a2ef8a7"
-      }
+      },
+      "GOOGLE_MAPS_API_KEY": "AIzaSyDL_hAQJdEdP1WmJirJssWtR2NkDiU3FAs"
     }
   }
 }

@@ -15,6 +15,10 @@ import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { UserLocationContext } from "../../Context/UserLocationContext";
 import { useUser } from "../../Context/userContext";
 import { collection, addDoc } from "firebase/firestore";
+// import { GOOGLE_MAPS_API_KEY } from 'react-native-dotenv';
+import Constants from 'expo-constants';
+
+
 import firebase from "firebase/app";
 import { firestore } from "../../firebase";
 
@@ -25,6 +29,11 @@ export default function GoogleMapView({ navigation }) {
 
   const { location } = useContext(UserLocationContext);
   const { user, setUser } = useUser();
+  // const apiUrl = process.env.GOOGLE_MAPS_API_KEY;
+  const apiKey = Constants.manifest.extra.GOOGLE_MAPS_API_KEY;
+
+
+
 
   useEffect(() => {
     if (location) {
@@ -111,8 +120,8 @@ export default function GoogleMapView({ navigation }) {
           provider={PROVIDER_GOOGLE}
           showsUserLocation={true}
           region={mapRegion}
-          apiKey="AIzaSyDL_hAQJdEdP1WmJirJssWtR2NkDiU3FAs"
-        />
+          apiKey={apiKey} // Use the apiKey here
+          />
       </View>
       <View style={styles.buttonContainer}>
         <Text style={{ marginLeft: 60 }}>
