@@ -17,7 +17,9 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { useUser } from "../Context/userContext";
+import firebase from 'firebase/app';
 import { auth } from "../firebase";
+
 
 
 

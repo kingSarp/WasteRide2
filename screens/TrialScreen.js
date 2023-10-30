@@ -8,11 +8,28 @@ import MapScreen from "./DrawerNavigationScreens/MapScreen";
 import PaymentScreen from "./DrawerNavigationScreens/PaymentScreen";
 import OrdersScreen from "./DrawerNavigationScreens/OrdersScreen";
 import AboutScreen from "./DrawerNavigationScreens/AboutScreen";
-import { LogOut } from "../Components/Home/LogOut";
+import firebase from 'firebase/app';
+import {
+  getAuth,signOut ,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../firebase";
+
 
 const Drawer = createDrawerNavigator();
 
-export default function TrialScreen() {
+export default function TrialScreen({ navigation }) {
+  const logout = async () => {
+    signOut(auth).then(() => {
+      console.log('User signed out!')
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+    });
+    navigation.navigate('SignIn'); 
+
+  };
   return (
     <Drawer.Navigator
       initialRouteName="Home"
@@ -21,13 +38,7 @@ export default function TrialScreen() {
           <DrawerItemList {...props} />
           <DrawerItem
             label="Logout"
-            onPress={() => {
-              // Implement your logout logic here
-              // For example, clear user session, navigate to the login screen, etc.
-              console.log("Logout");
-              // You can add your logout logic here, such as clearing user data, navigating, etc.
-              // For navigation, you may use props.navigation.navigate("Login") if you have a "Login" screen.
-            }}
+            onPress={logout}
           />
         </DrawerContentScrollView>
       )}
