@@ -1,7 +1,7 @@
 import { View, Image, Text, StyleSheet, Button, Pressable,   } from "react-native";
 import React from 'react'
 
-export default function Onboarding2() {
+export default function Onboarding2({ navigation}) {
   return (
     <View style={styles.container}>
     <Image

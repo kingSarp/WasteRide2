@@ -1,7 +1,7 @@
 import { View, Image, Text, StyleSheet, Button, Pressable,   } from "react-native";
 import React from 'react'
 
-export default function OnBoarding1() {
+export default function OnBoarding1({ navigation}) {
   return (
     <View style={styles.container}>
     <Image
