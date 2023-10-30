@@ -8,13 +8,15 @@ import {
   Image,
   Modal,
   Pressable,
-  Alert
+  Alert,
 } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { UserLocationContext } from "../../Context/UserLocationContext";
 import { useUser } from "../../Context/userContext";
 import { collection, addDoc } from "firebase/firestore";
+import Constants from "expo-constants";
+
 import firebase from "firebase/app";
 import { firestore } from "../../firebase";
 
@@ -25,6 +27,8 @@ export default function GoogleMapView({ navigation }) {
 
   const { location } = useContext(UserLocationContext);
   const { user, setUser } = useUser();
+  // const apiUrl = process.env.GOOGLE_MAPS_API_KEY;
+  const apiKey = Constants.manifest.extra.GOOGLE_MAPS_API_KEY;
 
   useEffect(() => {
     if (location) {
@@ -111,14 +115,14 @@ export default function GoogleMapView({ navigation }) {
           provider={PROVIDER_GOOGLE}
           showsUserLocation={true}
           region={mapRegion}
-          apiKey="AIzaSyDL_hAQJdEdP1WmJirJssWtR2NkDiU3FAs"
+          apiKey={apiKey} // Use the apiKey here
         />
       </View>
       <View style={styles.buttonContainer}>
         <Text style={{ marginLeft: 60 }}>
           Choose a convient waste collector
         </Text>
-        <View style={styles.CarContainer}>
+        {/* <View style={styles.CarContainer}>
           <View style={styles.mini}>
             <Image
               resizeMode="contain"
@@ -133,7 +137,7 @@ export default function GoogleMapView({ navigation }) {
             />
             <Text>Large</Text>
           </View>
-        </View>
+        </View> */}
         <View style={styles.rideDetails}>
           <Button title="Scheduled" color="#8DD4A9" onPress={scheduled} />
           <Button title="Ride Options" color="#8DD4A9" />
@@ -151,7 +155,7 @@ export default function GoogleMapView({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F7F7F7'
+    backgroundColor: "#F7F7F7",
   },
   mapContainer: {
     flex: 6,
@@ -162,7 +166,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 3,
     padding: 16,
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     shadowColor: "#000",
@@ -176,39 +180,39 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333'
+    fontWeight: "bold",
+    color: "#333",
   },
   CarContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 5
+    marginTop: 5,
   },
   mini: {
     alignItems: "center",
     flex: 1,
-    padding: 10
+    padding: 10,
   },
   large: {
     alignItems: "center",
     flex: 1,
-    padding: 10
+    padding: 10,
   },
   rideDetails: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 5,
-    marginBottom: 10
+    marginBottom: 10,
   },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: 'rgba(0,0,0,0.5)'
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
   modalView: {
-    width: '80%',
+    width: "80%",
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -226,8 +230,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    width: '100%',
-    marginTop: 10
+    width: "100%",
+    marginTop: 10,
   },
   buttonClose: {
     backgroundColor: "#66d237",
@@ -241,6 +245,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 15,
     textAlign: "center",
-    color: '#333'
+    color: "#333",
   },
 });

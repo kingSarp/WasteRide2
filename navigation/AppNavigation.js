@@ -10,6 +10,8 @@ import RegisterScreen from "../screens/RegisterScreen";
 import PasswordScreen from "../screens/PasswordScreen";
 import TrialScreen from "../screens/TrialScreen";
 import PickupSchedulingScreen from "../screens/PickupSchedulingScreen";
+import OnBoarding1 from "../screens/OnBoarding1";
+import Onboarding2 from "../screens/Onboarding2";
 // import HomeScreen from '../screens/HomeScreen';
 // import MapScreen from '../screens/MapScreen';
 
@@ -22,6 +24,8 @@ export default function AppNavigation() {
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Splash" component={SplashScreen} />
+      <Stack.Screen name="Onboarding1" component={OnBoarding1}/>
+      <Stack.Screen name="Onboarding2" component={Onboarding2}/>
       <Stack.Screen name="SignIn" component={SignInScreen} />
       <Stack.Screen name="SignUp" component={SignUpScreen} />
       <Stack.Screen name="OtpScreen" component={OtpScreen} />
