@@ -19,7 +19,7 @@ export default function SplashScreen({ navigation }) {
         style={styles.button1}
         onPress={() => navigation.navigate("Onboarding1")}
       >
-        <Text > Get Started</Text>
+        <Text style={styles.buttonText}>Next</Text>
       </Pressable>
     </View>
   );
@@ -48,5 +48,9 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: "center",
     width: "100%",
+  },
+  buttonText: {
+    color: "white", // Add text color
+    fontSize: 18, // Increase the font size
   },
 });
