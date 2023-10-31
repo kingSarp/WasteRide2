@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Modal,
   Pressable,
+  Alert,
   Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -17,6 +18,7 @@ import { useUser } from "../../Context/userContext";
 import { collection, addDoc } from "firebase/firestore";
 import Constants from "expo-constants";
 import Icon from 'react-native-vector-icons/Ionicons'; // Make sure to install this package
+import { firestore } from "../../firebase";
 
 export default function GoogleMapView() {
   const [mapRegion, setMapRegion] = useState(null);
