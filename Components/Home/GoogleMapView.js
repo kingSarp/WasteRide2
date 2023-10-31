@@ -5,10 +5,10 @@ import {
   StyleSheet,
   Button,
   ActivityIndicator,
-  Image,
+  TouchableOpacity,
   Modal,
   Pressable,
-  Alert,
+  Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
@@ -16,19 +16,17 @@ import { UserLocationContext } from "../../Context/UserLocationContext";
 import { useUser } from "../../Context/userContext";
 import { collection, addDoc } from "firebase/firestore";
 import Constants from "expo-constants";
+import Icon from 'react-native-vector-icons/Ionicons'; // Make sure to install this package
 
-import firebase from "firebase/app";
-import { firestore } from "../../firebase";
-
-export default function GoogleMapView({ navigation }) {
+export default function GoogleMapView() {
   const [mapRegion, setMapRegion] = useState(null);
   const [pickupLocation, setPickupLocation] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
   const { location } = useContext(UserLocationContext);
   const { user, setUser } = useUser();
-  // const apiUrl = process.env.GOOGLE_MAPS_API_KEY;
   const apiKey = Constants.manifest.extra.GOOGLE_MAPS_API_KEY;
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (location) {
@@ -42,13 +40,7 @@ export default function GoogleMapView({ navigation }) {
       const newPickupLocation = `Latitude: ${location.coords.latitude}, Longitude: ${location.coords.longitude}`;
       setPickupLocation(newPickupLocation);
 
-      console.log("User data:", user);
       setUser(user);
-
-      console.log("Location available:", location);
-      console.log("Pickup Location:", pickupLocation);
-    } else {
-      console.log("Location is missing.");
     }
   }, [location]);
 
@@ -58,16 +50,9 @@ export default function GoogleMapView({ navigation }) {
 
   const requestPickup = async () => {
     if (!user || !pickupLocation) {
-      console.log("User or Pickup Location is missing.");
+      Alert.alert("Error", "User or Pickup Location is missing.");
       return;
     }
-
-    console.log(
-      "Requesting pickup with user:",
-      user.uid,
-      "and pickup location:",
-      pickupLocation
-    );
 
     try {
       await addDoc(collection(firestore, "pickupRequests"), {
@@ -75,10 +60,9 @@ export default function GoogleMapView({ navigation }) {
         pickupLocation: pickupLocation,
         status: "pending",
       });
-      console.log("Pickup request successfully sent.");
       setModalVisible(true);
     } catch (error) {
-      console.error("Error requesting pickup:", error);
+      Alert.alert("Error", "Error requesting pickup: " + error.message);
     }
   };
 
@@ -88,6 +72,10 @@ export default function GoogleMapView({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Icon name="arrow-back" size={25} color="#333" />
+      </TouchableOpacity>
+
       <Modal
         animationType="slide"
         transparent={true}
@@ -98,7 +86,7 @@ export default function GoogleMapView({ navigation }) {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Request successfully Booked!</Text>
+            <Text style={styles.modalText}>Request successfully booked!</Text>
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
@@ -118,26 +106,11 @@ export default function GoogleMapView({ navigation }) {
           apiKey={apiKey} // Use the apiKey here
         />
       </View>
+
       <View style={styles.buttonContainer}>
         <Text style={{ marginLeft: 60 }}>
-          Choose a convient waste collector
+          Choose a convenient waste collector
         </Text>
-        {/* <View style={styles.CarContainer}>
-          <View style={styles.mini}>
-            <Image
-              resizeMode="contain"
-              source={require("../../assets/images/mini.png")}
-            />
-            <Text>Mini</Text>
-          </View>
-          <View style={styles.large}>
-            <Image
-              resizeMode="contain"
-              source={require("../../assets/images/large.jpg")}
-            />
-            <Text>Large</Text>
-          </View>
-        </View> */}
         <View style={styles.rideDetails}>
           <Button title="Scheduled" color="#8DD4A9" onPress={scheduled} />
           <Button title="Ride Options" color="#8DD4A9" />
@@ -178,26 +151,22 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 3,
   },
-  label: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  CarContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 5,
-  },
-  mini: {
-    alignItems: "center",
-    flex: 1,
+  backButton: {
+    position: 'absolute',
+    top: Constants.statusBarHeight + 10, // better positioning for status bar height
+    left: 20,
+    zIndex: 10,
+    backgroundColor: 'white',
+    borderRadius: 20,
     padding: 10,
-  },
-  large: {
-    alignItems: "center",
-    flex: 1,
-    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 1.41,
+    elevation: 2,
   },
   rideDetails: {
     flexDirection: "row",
@@ -247,4 +216,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#333",
   },
+  // You can add or refine styles as needed.
 });
