@@ -88,7 +88,7 @@ export default function GoogleMapView() {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Request successfully booked!</Text>
+            <Text style={styles.modalText}>Request successfully booked!!</Text>
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F7F7F7",
   },
   mapContainer: {
-    flex: 6,
+    flex: 7,
   },
   map: {
     flex: 1,
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: Constants.statusBarHeight + 10, // better positioning for status bar height
+    top: Constants.statusBarHeight + 0, //10 better positioning for status bar height
     left: 20,
     zIndex: 10,
     backgroundColor: 'white',
